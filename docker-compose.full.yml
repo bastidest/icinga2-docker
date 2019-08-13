@@ -1,0 +1,29 @@
+version: '3.3'
+
+services:
+  icinga2:
+    build:
+      context: .
+      dockerfile: icinga.Dockerfile
+      args:
+        - GIT_REF_ICINGA2=${GIT_REF_ICINGA2}
+        - GIT_REF_ICINGAWEB2=${GIT_REF_ICINGAWEB2}
+    env_file:
+      - ./common.env
+      - ./icinga.env
+    ports:
+      - 80:80
+    volumes:
+      - ./data/icinga2/etc/:/usr/local/icinga2/etc/icinga2
+
+  mysql:
+    build:
+      context: .
+      dockerfile: mysql.Dockerfile
+      args:
+        - GIT_REF_ICINGA2=${GIT_REF_ICINGA2}
+        - GIT_REF_ICINGAWEB2=${GIT_REF_ICINGAWEB2}
+    env_file:
+      - ./common.env
+      - ./mysql.env
+    command: '/app/start.sh'
