@@ -2,6 +2,7 @@ version: '3.3'
 
 services:
   icinga2:
+    image: bastidest/icinga2:${GIT_REF_ICINGA2}
     build:
       context: .
       dockerfile: icinga.Dockerfile
@@ -17,6 +18,7 @@ services:
       - ./data/icinga2/etc/:/usr/local/icinga2/etc/icinga2
 
   mysql:
+    image: bastidest/icinga2-mysql:${GIT_REF_ICINGA2}
     build:
       context: .
       dockerfile: mysql.Dockerfile
