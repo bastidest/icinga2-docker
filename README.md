@@ -5,5 +5,5 @@ You need to configure the `./data/icinga2/etc/conf.d/features-available/ido-mysq
 
 ## TODO
 - Conditional Insertion of icingaadmin credentials
-- Monitoring plugin
+- Monitoring plugin ("No backend has been configured")
 - Graphite

@@ -53,6 +53,7 @@ RUN groupadd -r icingaweb2\
   && a2enmod rewrite
 
 COPY ./icinga/icingaweb2-etc/* /template/icingaweb2-etc/
+COPY ./icinga/icingaweb2-monitoring/* /template/icingaweb2-monitoring/
 # /build/icingaweb2/bin/icingacli setup token create --config=/usr/local/icinga2/etc/icingaweb2
 
 WORKDIR /app
