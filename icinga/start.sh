@@ -80,6 +80,11 @@ if [[ ! -d "$MONITORING_PATH" ]] ; then
   cp /template/icingaweb2-monitoring/* "$MONITORING_PATH/"
   get_icingaweb2_api_password
   sed -i "s|xxxICINGAWEBAPIPASSWORDxxx|${ICINGAWEB2_API_PASSWORD}|g" "$MONITORING_PATH/commandtransports.ini"
+
+  # move this file to this weird location for whatever reason
+  mkdir -p /usr/local/icinga2/etc/icingaweb2/modules/monitoring
+  mv "$MONITORING_PATH/backends.ini" /usr/local/icinga2/etc/icingaweb2/modules/monitoring/
+  chown -R www-data:icingaweb2 /usr/local/icinga2/etc/icingaweb2/modules
 fi
 
 echo "starting apache"
