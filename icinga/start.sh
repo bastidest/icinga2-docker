@@ -23,6 +23,11 @@ function get_icingaweb2_api_password() {
   ' /usr/local/icinga2/etc/icinga2/conf.d/api-users.conf)
 }
 
+if [ ! -f /usr/local/icinga2/etc/icinga2/icinga2.conf ] ; then
+  echo "copy icinga config templates"
+  cp -r /template/icinga2/* /usr/local/icinga2/etc/icinga2/
+fi
+
 ICINGAWEB2_API_PASSWORD=$(openssl rand -base64 16)
 
 if [ ! -f /usr/local/icinga2/var/lib/icinga2/ca/ca.crt ] ; then
