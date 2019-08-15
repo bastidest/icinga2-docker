@@ -24,7 +24,8 @@ RUN apt-get update\
   libpq-dev\
   apache2\
   php7.3 php7.3-cli php7.3-curl php-php-gettext php7.3-intl php7.3-mbstring php7.3-xml php7.3-ldap php7.3-gd php-imagick php7.3-mysql php7.3-pgsql\
-  monitoring-plugins
+  monitoring-plugins\
+  && rm -rf /var/lib/apt/lists/*
 
 RUN git clone --depth 1 --branch ${GIT_REF_ICINGA2} https://github.com/Icinga/icinga2.git icinga2
 RUN mkdir icinga2/release\
