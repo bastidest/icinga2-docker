@@ -29,3 +29,6 @@ services:
       - ./common.env
       - ./mysql.env
     command: '/app/start.sh'
+
+  graphite:
+    image: graphiteapp/docker-graphite-statsd
