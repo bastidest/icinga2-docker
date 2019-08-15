@@ -87,6 +87,26 @@ if [[ ! -d "$MONITORING_PATH" ]] ; then
   chown -R www-data:icingaweb2 /usr/local/icinga2/etc/icingaweb2/modules
 fi
 
+GRAPHITE_PATH="/usr/local/icinga2/etc/icingaweb2/enabledModules/graphite"
+if [[ ! -d "$GRAPHITE_PATH" ]] ; then
+  echo "enabling graphite module in icinga"
+  /usr/local/icinga2/sbin/icinga2 feature enable graphite
+  cat > /usr/local/icinga2/etc/icinga2/features-available/graphite.conf <<EOF
+object GraphiteWriter "graphite" {
+  host = "graphite"
+  port = 2003
+}
+EOF
+
+  echo "enabling module graphite"
+  ln -s /build/icingaweb2/modules/graphite "$GRAPHITE_PATH"
+
+  mkdir -p /usr/local/icinga2/etc/icingaweb2/modules/graphite/
+  cp /template/icingaweb2-graphite/config.ini /usr/local/icinga2/etc/icingaweb2/modules/graphite/config.ini
+  
+  chown -R www-data:icingaweb2 /usr/local/icinga2/etc/icingaweb2
+fi
+
 echo "starting apache"
 /etc/init.d/apache2 start
 echo "starting icinga daemon"

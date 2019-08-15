@@ -2,6 +2,7 @@ FROM debian:buster
 
 ARG GIT_REF_ICINGA2=master
 ARG GIT_REF_ICINGAWEB2=master
+ARG GIT_REF_ICINGAWEB2_GRAPHITE=master
 
 WORKDIR /build
 
@@ -40,11 +41,12 @@ RUN cd icinga2/release && make install\
     /usr/local/icinga2/var/log\
     /usr/local/icinga2/var/run\
     /usr/local/icinga2/var/lib
-#  && /usr/local/icinga2/sbin/icinga2 feature enable ido-mysql
 
 RUN apt-get update && apt-get -y install monitoring-plugins
 
 RUN git clone --depth 1 --branch ${GIT_REF_ICINGAWEB2} https://github.com/Icinga/icingaweb2.git icingaweb2
+
+RUN git clone --depth 1 --branch ${GIT_REF_ICINGAWEB2_GRAPHITE} https://github.com/Icinga/icingaweb2-module-graphite.git ./icingaweb2/modules/graphite
 
 RUN groupadd -r icingaweb2\
   && usermod -a -G icingaweb2 www-data\
@@ -54,6 +56,7 @@ RUN groupadd -r icingaweb2\
 
 COPY ./icinga/icingaweb2-etc/* /template/icingaweb2-etc/
 COPY ./icinga/icingaweb2-monitoring/* /template/icingaweb2-monitoring/
+COPY ./icinga/icingaweb2-graphite/* /template/icingaweb2-graphite/
 # /build/icingaweb2/bin/icingacli setup token create --config=/usr/local/icinga2/etc/icingaweb2
 
 WORKDIR /app
