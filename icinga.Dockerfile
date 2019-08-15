@@ -50,14 +50,12 @@ RUN git clone --depth 1 --branch ${GIT_REF_ICINGAWEB2_GRAPHITE} https://github.c
 
 RUN groupadd -r icingaweb2\
   && usermod -a -G icingaweb2 www-data\
-  && /build/icingaweb2/bin/icingacli setup config directory --config=/usr/local/icinga2/etc/icingaweb2\
-  && /build/icingaweb2/bin/icingacli setup config webserver apache --path=/ --root=/build/icingaweb2/public/ --config=/usr/local/icinga2/etc/icingaweb2 --file=/etc/apache2/sites-enabled/icingaweb2.conf\
+  && /build/icingaweb2/bin/icingacli setup config directory --config=/usr/local/icingaweb2/etc\
+  && /build/icingaweb2/bin/icingacli setup config webserver apache --path=/ --root=/build/icingaweb2/public/ --config=/usr/local/icingaweb2/etc --file=/etc/apache2/sites-enabled/icingaweb2.conf\
   && a2enmod rewrite
 
-COPY ./icinga/icingaweb2-etc/* /template/icingaweb2-etc/
-COPY ./icinga/icingaweb2-monitoring/* /template/icingaweb2-monitoring/
-COPY ./icinga/icingaweb2-graphite/* /template/icingaweb2-graphite/
-# /build/icingaweb2/bin/icingacli setup token create --config=/usr/local/icinga2/etc/icingaweb2
+COPY ./icingaweb2/ /template/icingaweb2/
+# /build/icingaweb2/bin/icingacli setup token create --config=/usr/local/icingaweb2/etc
 
 WORKDIR /app
 
