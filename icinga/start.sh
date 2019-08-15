@@ -28,6 +28,24 @@ if [ ! -f /usr/local/icinga2/etc/icinga2/icinga2.conf ] ; then
   cp -r /template/icinga2/* /usr/local/icinga2/etc/icinga2/
 fi
 
+IDO_CONFIG_FILE="/usr/local/icinga2/etc/icinga2/features-enabled/ido-mysql.conf"
+if [ ! -f "$IDO_CONFIG_FILE" ] ; then
+  echo "enabling mysql support"
+  /usr/local/icinga2/sbin/icinga2 feature enable ido-mysql
+
+  cat > "$IDO_CONFIG_FILE" <<EOF
+object IdoMysqlConnection "ido-mysql" {
+  user = "xxxICINGAUSERxxx"
+  password = "xxxICINGAPASSWORDxxx"
+  host = "mysql"
+  database = "xxxICINGADBNAMExxx"
+}
+EOF
+  sed -i "s|xxxICINGADBNAMExxx|${MYSQL_DATABASE}|g" "$IDO_CONFIG_FILE"
+  sed -i "s|xxxICINGAUSERxxx|${MYSQL_USER}|g" "$IDO_CONFIG_FILE"
+  sed -i "s|xxxICINGAPASSWORDxxx|${MYSQL_PASSWORD}|g" "$IDO_CONFIG_FILE"
+fi
+
 ICINGAWEB2_API_PASSWORD=$(openssl rand -base64 16)
 
 if [ ! -f /usr/local/icinga2/var/lib/icinga2/ca/ca.crt ] ; then
