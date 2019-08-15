@@ -32,3 +32,6 @@ services:
 
   graphite:
     image: graphiteapp/docker-graphite-statsd
+    volumes:
+      - ./graphite/storage-schemas.conf:/opt/graphite/conf/storage-schemas.conf:ro
+      - ./graphite/graphTemplates.conf:/opt/graphite/conf/graphTemplates.conf:ro
