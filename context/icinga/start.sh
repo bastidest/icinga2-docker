@@ -104,6 +104,7 @@ if [[ ! -d "$MONITORING_PATH" ]] ; then
   # move this file to this weird location for whatever reason
   mkdir -p /usr/local/icingaweb2/etc/modules/monitoring
   mv "$MONITORING_PATH/backends.ini" /usr/local/icingaweb2/etc/modules/monitoring/
+  mv "$MONITORING_PATH/commandtransports.ini" /usr/local/icingaweb2/etc/modules/monitoring/
 fi
 
 GRAPHITE_PATH="/usr/local/icingaweb2/etc/enabledModules/graphite"
