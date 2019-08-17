@@ -79,8 +79,6 @@ if [ ! -f /usr/local/icingaweb2/etc/resources.ini ] ; then
   sed -i "s|xxxICINGAPASSWORDxxx|${MYSQL_PASSWORD}|g" /usr/local/icingaweb2/etc/resources.ini
 fi
 
-chown -R www-data:icingaweb2 /usr/local/icingaweb2/etc
-
 echo "waiting for login to be possible"
 until mysql -hmysql -u${MYSQL_WEB_USER} -p${MYSQL_WEB_PASSWORD} -e "" 2>/dev/null; do
   sleep 1
@@ -98,7 +96,6 @@ if [[ ! -d "$MONITORING_PATH" ]] ; then
   echo "enabling module monitoring"
   mkdir /usr/local/icingaweb2/etc/enabledModules
   ln -s /build/icingaweb2/modules/monitoring "$MONITORING_PATH"
-  chown -R www-data:icingaweb2 /usr/local/icingaweb2/etc/enabledModules
 
   cp /template/icingaweb2/monitoring/* "$MONITORING_PATH/"
   get_icingaweb2_api_password
@@ -107,7 +104,6 @@ if [[ ! -d "$MONITORING_PATH" ]] ; then
   # move this file to this weird location for whatever reason
   mkdir -p /usr/local/icingaweb2/etc/modules/monitoring
   mv "$MONITORING_PATH/backends.ini" /usr/local/icingaweb2/etc/modules/monitoring/
-  chown -R www-data:icingaweb2 /usr/local/icingaweb2/etc/modules
 fi
 
 GRAPHITE_PATH="/usr/local/icingaweb2/etc/enabledModules/graphite"
@@ -126,9 +122,14 @@ EOF
 
   mkdir -p /usr/local/icingaweb2/etc/modules/graphite/
   cp /template/icingaweb2/graphite/config.ini /usr/local/icingaweb2/etc/modules/graphite/config.ini
-
-  chown -R www-data:icingaweb2 /usr/local/icingaweb2/etc
 fi
+
+chown -R www-data:icingaweb2 /usr/local/icingaweb2/etc
+chown -R icinga:icingacmd\
+  /usr/local/icinga2/var/cache\
+  /usr/local/icinga2/var/log\
+  /usr/local/icinga2/var/run\
+  /usr/local/icinga2/var/lib
 
 echo "starting apache"
 /etc/init.d/apache2 start

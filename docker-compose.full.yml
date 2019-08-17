@@ -4,7 +4,7 @@ services:
   icinga2:
     image: bastidest/icinga2:${GIT_REF_ICINGA2}
     build:
-      context: .
+      context: ./context
       dockerfile: icinga.Dockerfile
       args:
         - GIT_REF_ICINGA2=${GIT_REF_ICINGA2}
@@ -15,12 +15,13 @@ services:
     ports:
       - 80:80
     volumes:
-      - ./data/icinga2/etc/:/usr/local/icinga2/etc/icinga2
+      - ./data/icinga2/etc:/usr/local/icinga2/etc/icinga2
+      - ./data/icinga2/lib:/usr/local/icinga2/var/lib
 
   mysql:
     image: bastidest/icinga2-mysql:${GIT_REF_ICINGA2}
     build:
-      context: .
+      context: ./context
       dockerfile: mysql.Dockerfile
       args:
         - GIT_REF_ICINGA2=${GIT_REF_ICINGA2}
@@ -29,9 +30,12 @@ services:
       - ./common.env
       - ./mysql.env
     command: '/app/start.sh'
+    volumes:
+      - ./data/mysql/lib:/var/lib/mysql
 
   graphite:
     image: graphiteapp/docker-graphite-statsd
     volumes:
-      - ./graphite/storage-schemas.conf:/opt/graphite/conf/storage-schemas.conf:ro
-      - ./graphite/graphTemplates.conf:/opt/graphite/conf/graphTemplates.conf:ro
+      - ./context/graphite/storage-schemas.conf:/opt/graphite/conf/storage-schemas.conf:ro
+      - ./context/graphite/graphTemplates.conf:/opt/graphite/conf/graphTemplates.conf:ro
+      - ./data/graphite/lib/:/var/lib/graphite
