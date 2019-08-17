@@ -9,11 +9,13 @@ services:
       args:
         - GIT_REF_ICINGA2=${GIT_REF_ICINGA2}
         - GIT_REF_ICINGAWEB2=${GIT_REF_ICINGAWEB2}
+    hostname: 'icinga2'
     env_file:
       - ./common.env
       - ./icinga.env
     ports:
       - 80:80
+      - 5665:5665
     volumes:
       - ./data/icinga2/etc:/usr/local/icinga2/etc/icinga2
       - ./data/icinga2/lib:/usr/local/icinga2/var/lib
