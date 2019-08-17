@@ -10,6 +10,7 @@ RUN apt-get update\
   && apt-get -y install\
   apt-transport-https\
   wget\
+  netcat\
   gnupg\
   git\
   cmake\
@@ -55,8 +56,6 @@ RUN groupadd -r icingaweb2\
   && /build/icingaweb2/bin/icingacli setup config directory --config=/usr/local/icingaweb2/etc\
   && /build/icingaweb2/bin/icingacli setup config webserver apache --path=/ --root=/build/icingaweb2/public/ --config=/usr/local/icingaweb2/etc --file=/etc/apache2/sites-enabled/icingaweb2.conf\
   && a2enmod rewrite
-
-RUN apt-get update && apt install -y netcat
 
 COPY ./icingaweb2/ /template/icingaweb2/
 # /build/icingaweb2/bin/icingacli setup token create --config=/usr/local/icingaweb2/etc
