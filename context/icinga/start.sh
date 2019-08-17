@@ -80,8 +80,13 @@ if [ ! -f /usr/local/icingaweb2/etc/resources.ini ] ; then
 fi
 
 echo "waiting for login to be possible"
+
+until echo "are you there?" | nc mysql 6969 ; do
+  sleep 3
+done
+
 until mysql -hmysql -u${MYSQL_WEB_USER} -p${MYSQL_WEB_PASSWORD} -e "" 2>/dev/null; do
-  sleep 1
+  sleep 3
 done
 
 ROW_COUNT=$(mysql -Ns -hmysql -u${MYSQL_WEB_USER} -p${MYSQL_WEB_PASSWORD} "$MYSQL_WEB_DATABASE" -e 'select count(*) from icingaweb_group')

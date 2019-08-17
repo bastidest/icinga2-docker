@@ -16,7 +16,7 @@ MYSQL_PID=$!
 
 echo "waiting for database"
 until mysqladmin ping >/dev/null 2>&1; do
-  sleep 1
+  sleep 3
 done
 echo "database online"
 
@@ -28,7 +28,7 @@ EOF
 
 echo "waiting for login to be possible"
 until mysql -e "" 2>/dev/null; do
-  sleep 1
+  sleep 3
 done
 
 sleep 5
@@ -40,5 +40,8 @@ if [ "$?" -eq "0" ] && [ ! -z $sql_response ] ; then
 else
   importSchema
 fi
+
+echo "signal that database is ready"
+/app/nc -kl 6969 > /dev/null &
 
 wait $MYSQL_PID
