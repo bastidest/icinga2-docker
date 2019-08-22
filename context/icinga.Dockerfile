@@ -10,6 +10,7 @@ RUN apt-get update\
   && apt-get -y install\
   apt-transport-https\
   wget\
+  curl\
   netcat\
   gnupg\
   git\
